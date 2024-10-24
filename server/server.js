@@ -4,6 +4,10 @@ const errorHandler=require("./middlewares/errorHandler");
 const cors=require("cors");
 const dbConnect = require('./config/dbConnect');
 
+//partials
+var hbs=require('hbs');
+hbs.registerPartials(__dirname+'/views/partials',function(err){});
+
 
 //env file config 
 const dotenv=require("dotenv");
@@ -21,6 +25,11 @@ app.use(cors());
 app.get('/',(req,res)=>{
     res.send("working");
 });
+
+//User Registeration
+app.use("/api/user",require("./routes/userRoutes"));
+
+
 //APP CONFIG START
 app.listen(port,()=>{
     console.log(`Server running on port https://localhost:${port}`);
@@ -44,7 +53,6 @@ const users = [
 ];
 res.render('home', { users }); 
 });
-
 
 
 app.set('view engine',"hbs");
