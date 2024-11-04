@@ -29,6 +29,8 @@ app.get('/',(req,res)=>{
 //User Registeration
 app.use("/api/user",require("./routes/userRoutes"));
 
+// Doctor Details Routes
+app.use("/api/doctors", require("./routes/doctorsDetails"));
 
 //APP CONFIG START
 app.listen(port,()=>{
@@ -56,3 +58,5 @@ res.render('home', { users });
 
 
 app.set('view engine',"hbs");
+
+

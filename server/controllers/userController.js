@@ -31,3 +31,30 @@ const registerUser=asyncHandler(async(req,res)=>{
     res.status(201).json({message:"User registered Successfully",user});
 });
 module.exports={registerUser};
+
+const express = require("express");
+const app = express();
+
+app.use(express.json()); // Middleware to parse JSON
+
+// Hardcoded username and password for simplicity
+const correctUsername = "admin";
+const correctPassword = "password123";
+
+// Route to handle login
+app.post("/login", (req, res) => {
+    const { username, password } = req.body;
+
+    // Check if username and password match the hardcoded values
+    if (username === correctUsername && password === correctPassword) {
+        res.status(200).json({ message: "Login successful" });
+    } else {
+        res.status(401).json({ message: "Invalid credentials" });
+    }
+});
+
+// Start the server
+const port = 5000;  //run on http://localhost:5000/login
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+});
