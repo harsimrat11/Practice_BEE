@@ -3,6 +3,11 @@ const connectDb=require("./config/dbConnect");
 const errorHandler=require("./middlewares/errorHandler");
 const cors=require("cors");
 const dbConnect = require('./config/dbConnect');
+//multer
+const multer  = require('multer')
+// const upload = multer({ dest: 'uploads/' }) //run multer on thunderclient (get) http://localhost:5000/home
+
+
 
 //partials
 var hbs=require('hbs');
@@ -15,10 +20,22 @@ dotenv.config();
 
 connectDb();
 const app=express();
-const port=process.env.port||4999;
+const port=process.env.port||5000;
 
 app.use(express.json());
 app.use(cors());
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, './uploads')
+    },
+    filename: function (req, file, cb) {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+      cb(null, file.fieldname + '-' + uniqueSuffix)
+    }
+  })
+  
+  const upload = multer({ storage: storage })
 
 
 //ROUTES BELOW
@@ -37,6 +54,8 @@ app.listen(port,()=>{
     console.log(`Server running on port https://localhost:${port}`);
 
 });
+
+
 
 app.get('/home',(req,res)=>{     //  run in http://localhost:5000/home
     res.render('home',{
@@ -59,4 +78,63 @@ res.render('home', { users });
 
 app.set('view engine',"hbs");
 
+// app.post('/profile', upload.single('avatar'), function (req, res, next) {
+//     // req.file is the `avatar` file
+//     // req.body will hold the text fields, if there were any
+//     console.log(req.body);
+//     console.log(req.file);
+//     return res.redirect("/home");
 
+//   })
+
+//code to implement  MUlter in mongodb
+// app.post('/profile', upload.single('avatar'), async (req, res, next) => {
+//     try {
+//         console.log(req.file);
+//         const file = new File({
+//             filename: req.file.filename,
+//             path: req.file.path,
+//         });
+//         await file.save();
+//         res.redirect("/home");
+//     } catch (error) {
+//         console.error("Error saving file to database:", error);
+//         res.status(500).send("Error saving file");
+//     }
+// });
+
+// const storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//         cb(null, './uploads')
+//     },
+//     filename: function (req, file, cb) {
+//         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+//         cb(null, file.fieldname + '-' + uniqueSuffix)
+//     }
+// })
+
+const uploads = multer({ storage: storage })
+
+const Upload = require("./models/UploadModel")
+
+app.post("/profile", upload.single('avatar'), async (req, res, next) => {
+    try {
+        const profileData = {
+            avatar: {
+                fileName: req.file.filename, // Use req.file.filename for file name
+                filePath: req.file.path,     // Use req.file.path for file path
+            },
+        };
+
+        const newProfile = new Upload(profileData);
+        await newProfile.save();
+
+        console.log("Profile saved:", newProfile);
+        res.redirect("/home");
+    } catch (error) {
+        console.error("Error saving profile:", error);
+        res.status(500).send("Error saving profile.");
+    }
+});
+  
+  

@@ -12,6 +12,16 @@
         {{#each users}}
             <li>Name: {{this.name}}, Age: {{this.age}}</li> <!-- run in http://localhost:5000/allusers -->
         {{/each}}
-    
+
+    <div>
+        <form action="/profile" method="post" enctype="multipart/form-data">
+        <input type="file" name="avatar" />
+        
+        <input type="submit"value="upload">
+    </form>
+
+    {{!-- <button type="submit">submit</button> --}}
+    </div>
+
 </body>
 </html>
