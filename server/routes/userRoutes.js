@@ -3,10 +3,12 @@ const router=express.Router();
 
 const{
     registerUser,
-    login
+    userLogin
 }=require("../controllers/userController");
 
 //Router for user registeration
 router.post("/register",registerUser);
+
+router.post("/login",userLogin);
 
 module.exports=router;

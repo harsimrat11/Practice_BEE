@@ -30,31 +30,30 @@ const registerUser=asyncHandler(async(req,res)=>{
     });
     res.status(201).json({message:"User registered Successfully",user});
 });
-module.exports={registerUser};
 
-const express = require("express");
-const app = express();
 
-app.use(express.json()); // Middleware to parse JSON
+const userLogin = asyncHandler(async (req,res) => {
+    const { username, password } = req.body
 
-// Hardcoded username and password for simplicity
-const correctUsername = "admin";
-const correctPassword = "password123";
-
-// Route to handle login
-app.post("/login", (req, res) => {
-    const { username, password } = req.body;
-
-    // Check if username and password match the hardcoded values
-    if (username === correctUsername && password === correctPassword) {
-        res.status(200).json({ message: "Login successful" });
-    } else {
-        res.status(401).json({ message: "Invalid credentials" });
+    if (!username || !password) {
+        res.status(400);
+        throw new Error("Please fill the fields");
     }
-});
 
-// Start the server
-const port = 5000;  //run on http://localhost:5000/login
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-});
+    const user = await User.findOne({ username });
+    if (!user) {
+        res.status(401);
+        throw new Error("Invalid email or password");
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+        res.status(401);
+        throw new Error("Invalid email or password");
+    }
+
+    res.status(201).json({message: "User Logged in Successfully", user})
+
+})
+
+module.exports = { registerUser, userLogin }
