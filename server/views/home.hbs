@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -23,5 +23,39 @@
     {{!-- <button type="submit">submit</button> --}}
     </div>
 
+</body>
+</html> --}}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {{username}} <!-- run in http://localhost:5000/home -->
+
+    {{#each users}}
+        <li>Name: {{this.name}}, Age: {{this.age}}</li> <!-- run in http://localhost:5000/allusers -->
+    {{/each}}
+
+    <!-- Form to upload a new profile image -->
+    <div>
+        <form action="/profile" method="post" enctype="multipart/form-data">
+            <input type="file" name="avatar" />
+            <input type="submit" value="Upload">
+        </form>
+    </div>
+
+    <!-- Display the uploaded profile image -->
+    <div>
+        {{#if profile.avatar}}
+            <h3>Uploaded Profile Image:</h3>
+            <img src="/uploads/{{profile.avatar.fileName}}" alt="Profile Image" style="width: 200px; height: auto;">
+        {{else}}
+            <p>No profile image found.</p>
+        {{/if}}
+    </div>
 </body>
 </html>
