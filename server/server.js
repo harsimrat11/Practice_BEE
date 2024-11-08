@@ -3,6 +3,7 @@ const connectDb=require("./config/dbConnect");
 const errorHandler=require("./middlewares/errorHandler");
 const cors=require("cors");
 const path = require('path');
+const jwt = require('jsonwebtoken');
 
 const dbConnect = require('./config/dbConnect');
 //multer
