@@ -34,14 +34,14 @@ const registerUser=asyncHandler(async(req,res)=>{
 
 
 const userLogin = asyncHandler(async (req,res) => {
-    const { username, password } = req.body
+    const { email, password } = req.body
 
-    if (!username || !password) {
+    if (!email || !password) {
         res.status(400);
         throw new Error("Please fill the fields");
     }
 
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ email });
     if (!user) {
         res.status(401);
         throw new Error("Invalid email or password");
@@ -55,10 +55,15 @@ const userLogin = asyncHandler(async (req,res) => {
 
     res.status(201).json({message: "User Logged in Successfully", user})
 
-    //jwt user login
-    const token = jwt.sign({ id: user._id, email: user.email }, process.env.PRIVATE_KEY, { expiresIn: '1h' });
+    // Generate JWT token
+    const token = jwt.sign(
+        { id: user._id, email: user.email,password: user.password },
+        process.env.PRIVATE_KEY,
+        { expiresIn: '1h' }
+    );
 
     // res.status(201).json({message: "User Logged in Successfully", user})
+    console.log(token)
     res.status(201).json({message: "User Logged in Successfully", user, token})
 
 })

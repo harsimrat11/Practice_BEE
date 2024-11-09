@@ -10,10 +10,19 @@ const jwt=require('jsonwebtoken');
 //         console.log(token);
 //     }
 // })
+
+
 const generateToken=(userData)=>{
 
         return jwt.sign(userData,process.env.PRIVATE_KEY);
 }
+
+// const generateToken = (userData) => {
+//     const { name,email,phoneNumber,password } = userData; // Example of required fields
+//     return jwt.sign({name,email,phoneNumber,password }, process.env.PRIVATE_KEY);
+// };
+
+
 const validateJwtToken=(req,res,next)=>
 {
     //first we are cheching if JWT token is available or not.
