@@ -1,36 +1,32 @@
 const mongoose = require("mongoose")
 
-const newsLetterSchema = mongoose.Schema(
+const newsletterSchema = mongoose.Schema(
     {
         title: {
             type: String,
-            require:[true,"Please add title"],
-
-        },
-        email: {
-            type: String,
-            require:[true,"Please add email"],
+            require: [true, "Please add title"]
         },
         author: {
             type: String,
-            require:[true,"Please add author"],
+            require: [true, "Please add author"]
         },
         date: {
             type: String,
-            require:[true,"Please add date"],
+            require: [true, "Please add date"]
         },
-        imageURL: {
-            type: String,
-            require:[true,"Please add imageURL"],
+        imageUrl: {
+            type: Number,
+            require: [true, "Please add imageUrl"]
+            
         },
-        description: {
+        discription: {
             type: String,
-            require:[true,"Please add Newsletter Description"],
+            require: [true, "Please add newsletter discription"]
         }
     },
     {
-        timestamps:true,
+        timestamps: true
     }
-);
+)
 
-module.exports = mongoose.model("NewsLetter", NewsLetterSchema);
+module.exports = mongoose.model("Newsletter", newsletterSchema)
