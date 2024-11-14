@@ -1,7 +1,7 @@
 //GET NEWSLETTER ,POST NEWSLETTER
 const asyncHandler=require("express-async-handler");
 const Newsletter=require("../model/newsletterModel");
-//newsletter ko get kaise krein
+
 const getNewsletter=asyncHandler(async(req,res)=>{
 try{
     const data=await Newsletter.find({});
